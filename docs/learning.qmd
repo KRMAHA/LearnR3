@@ -10,5 +10,14 @@ format: html
 #| include: false
 ```
 
-This code is used for uploading my work to GitHub
+This code is used for create and uploading my work to GitHub
 
+```{r}
+usethis::use_github() 
+```
+
+I will work with the nurses-stress.R data
+
+```{r}
+usethis::use_data_raw("nurses-stress")
+```
