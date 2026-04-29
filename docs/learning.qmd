@@ -1,15 +1,14 @@
 ---
-title: "Draft Quarto document"
-author: "Your Name"
+title: "Learining R3"
+author: "Kristina Matthiesen Hansen"
 format: html
 ---
 
-## Header 1
+## Pre-Workshop
 
 ```{r setup}
 #| include: false
 ```
 
-```{r}
-# Code chunk
-```
+This code is used for uploading my work to GitHub
+
