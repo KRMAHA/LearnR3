@@ -98,3 +98,36 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read()
 ```
+
+
+```{r 100rows}
+# Outputs only 100 rows
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read()
+
+
+# Her er det en defalut at der bliver loadet 100 rows, hvis ikke man selv specificerer hvor mange rækker man ønsker fx max_rows = 1050
+
+read <- function(file_path, max_rows = 100) {
+  data <- file_path |>
+    readr::read_csv(
+      show_col_types = FALSE,
+      name_repair = snakecase::to_snake_case,
+      n_max = max_rows
+    )
+  return(data)
+}
+
+# Outputs only 100 rows 
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read()
+
+# Outputs only 1000 rows
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read(max_rows = 1000)
+
+# Outputs all rows (`Inf` means infinity)
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read(max_rows = Inf)
+```
+
