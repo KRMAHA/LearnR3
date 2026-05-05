@@ -118,7 +118,7 @@ read <- function(file_path, max_rows = 100) {
   return(data)
 }
 
-# Outputs only 100 rows 
+# Outputs only 100 rows
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read()
 
@@ -130,4 +130,3 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = Inf)
 ```
-
