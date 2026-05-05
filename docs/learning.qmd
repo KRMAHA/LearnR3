@@ -12,12 +12,34 @@ format: html
 
 This code is used for create and uploading my work to GitHub
 
-```{r}
-usethis::use_github() 
+```{r GitHub}
+usethis::use_github()
 ```
 
 I will work with the nurses-stress.R data
 
-```{r}
+```{r data}
 usethis::use_data_raw("nurses-stress")
 ```
+
+```{r}
+library(readr)
+library(tidyverse)
+library(here)
+library(snakecase)
+```
+
+# Session-section
+
+Importing new data
+
+Snakecase er den bedste måde at gøre det på - det ser pænere ud
+
+```{r importdata}
+here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case,
+    n_max = 100
+  )
+``` 
