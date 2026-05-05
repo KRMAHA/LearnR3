@@ -68,3 +68,33 @@ add_numbers <- function(num1, num2) {
   return(added)
 }
 ```
+
+```{r}
+#' Read in one nurses-stress data file
+#'
+#' @param file_path
+#'
+#' @returns A path to a data file
+#' @export outputs a data frame/tibble
+#'
+#' @examples
+read <- function(file_path) {
+  data <- file_path |>
+    read_csv(
+      show_col_types = FALSE,
+      name_repair = to_snake_case,
+      n_max = 100
+    )
+  return(data)
+}
+```
+
+```{r}
+here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
+  read()
+```
+
+```{r}
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read()
+```
