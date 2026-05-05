@@ -4,23 +4,6 @@ author: "Kristina Matthiesen Hansen"
 format: html
 ---
 
-## Pre-Workshop
-
-```{r setup}
-#| include: false
-```
-
-This code is used for create and uploading my work to GitHub
-
-```{r GitHub}
-usethis::use_github()
-```
-
-I will work with the nurses-stress.R data
-
-```{r data}
-usethis::use_data_raw("nurses-stress")
-```
 
 ```{r}
 library(readr)
@@ -43,3 +26,31 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
     n_max = 100
   )
 ``` 
+
+## Exercise: Reading other files.
+```{r}
+here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case,
+    n_max = 100
+  )
+```
+
+
+New participant 
+```{r}
+here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case
+  )
+```
+```{r}
+here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case,
+    n_max = 100
+  )
+```
