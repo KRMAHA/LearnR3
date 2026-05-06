@@ -5,7 +5,8 @@ format: html
 ---
 
 
-```{r}
+```{r setup}
+library(fs)
 library(tidyverse)
 library(here)
 source(here("R/functions.R"))
@@ -52,7 +53,7 @@ here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") |>
     name_repair = to_snake_case
   )
 ```
-```{r function}
+```{r}
 #| eval: false
 #| include: false
 here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") |>
@@ -63,7 +64,7 @@ here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") |>
   )
 ```
 
-```{r function-2 |> }
+```{r function}
 #' Add two numbers together
 #'
 #' @param num1 A number here.
@@ -119,7 +120,6 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
 # Her er det en defalut at der bliver loadet 100 rows, hvis ikke man selv specificerer hvor mange rækker man ønsker fx max_rows = 1050
 
 
-
 # Outputs only 100 rows
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read()
@@ -133,4 +133,22 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = Inf)
 ```
 
+## Using map 
+```{r map}
+hr_files <- here("data-raw/nurses-stress/") |>
+  dir_ls(regexp = "HR.csv.gz", recurse = TRUE)
 
+hr_files
+
+
+hr_data <- hr_files |>
+  map(read) |>
+  list_rbind(names_to = "file_path_id")
+
+hr_data
+```
+
+### Noter til ovenstående øvelse 
+Hvis jeg gerne vil læse om en funktion ? foran 
+File_path_id bruges til at hente stilen ind for hvert ID gennem mappen de er placeret i. 
+Dette kan laves om til et unikt ID nummer for hvert individ, baseret på den unikke sti de tilhører. 
