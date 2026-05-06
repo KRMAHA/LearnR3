@@ -156,6 +156,12 @@ Dette kan laves om til et unikt ID nummer for hvert individ, baseret på den uni
 
 ## Exercise: Convert map to function and use on sleep.
 ```{r}
+#' Map function
+#'
+#' @param filename
+#'
+#' @returns all the datafiles combined together
+#'
 read_all <- function(filename) {
   files <- here::here("data-raw/nurses-stress/") |>
     fs::dir_ls(regexp = filename, recurse = TRUE)
@@ -172,5 +178,3 @@ read_all
 read_all("HR.csv.gz")
 read_all("IBI.csv.gz")
 ```
-
-
