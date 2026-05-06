@@ -151,4 +151,26 @@ hr_data
 ### Noter til ovenstående øvelse 
 Hvis jeg gerne vil læse om en funktion ? foran 
 File_path_id bruges til at hente stilen ind for hvert ID gennem mappen de er placeret i. 
-Dette kan laves om til et unikt ID nummer for hvert individ, baseret på den unikke sti de tilhører. 
+Dette kan laves om til et unikt ID nummer for hvert individ, baseret på den unikke sti de tilhører.
+
+
+## Exercise: Convert map to function and use on sleep.
+```{r}
+read_all <- function(filename) {
+  files <- here::here("data-raw/nurses-stress/") |>
+    fs::dir_ls(regexp = filename, recurse = TRUE)
+
+  data <- files |>
+    purrr::map(read) |>
+    purrr::list_rbind(names_to = "file_path_id")
+
+  return(data)
+}
+
+read_all
+
+read_all("HR.csv.gz")
+read_all("IBI.csv.gz")
+```
+
+
