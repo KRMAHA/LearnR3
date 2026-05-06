@@ -156,6 +156,8 @@ Dette kan laves om til et unikt ID nummer for hvert individ, baseret på den uni
 
 ## Exercise: Convert map to function and use on sleep.
 ```{r}
+#| eval: false
+#| include: false
 #' Map function
 #'
 #' @param filename
