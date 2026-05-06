@@ -180,3 +180,56 @@ read_all
 read_all("HR.csv.gz")
 read_all("IBI.csv.gz")
 ```
+
+## Inspecting the data
+
+```{r}
+hr_data <- read_all("HR.csv.gz")
+survey_data <- here("data-raw/nurses-stress/survey-results.csv.gz") |>
+  read()
+
+hr_data
+survey_data
+```
+
+them main reason we can't joun the two datasets togehter, is that the survey_data have ID's and the hr_data have folder paths instead - so we dont know wich values fits to wich id
+
+
+```{r}
+hr_data |>
+  mutate(
+    id = str_extract(
+      file_path_id,
+      pattern = "/stress/[:alnum:]{2}/"
+    ) |>
+      str_remove("/stress/") |>
+      str_remove("/"),
+    .before = file_path_id
+  ) |>
+  select(-file_path_id)
+```
+```{r}
+#| eval: false
+#| include: false
+#| 
+#' Creating function for getting ID
+#'
+#' @returns data with id 
+#'
+get_participant_id <- function(data) {
+  data_with_id <- data |>
+    dplyr::mutate(
+      id = stringr::str_extract(
+        file_path_id,
+        pattern = "/stress/[:alnum:]{2}/"
+      ) |>
+        stringr::str_remove("/stress/") |>
+        stringr::str_remove("/"),
+      .before = file_path_id
+    ) |>
+    dplyr::select(-file_path_id)
+  return(data_with_id)
+}
+
+get_participant_id(hr_data)
+```
