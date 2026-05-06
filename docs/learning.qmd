@@ -10,6 +10,7 @@ library(fs)
 library(tidyverse)
 library(here)
 source(here("R/functions.R"))
+source(here::here("R/functions.R"))
 ```
 
 # Session-section
@@ -315,3 +316,30 @@ summarise_by_datetime <- function(data) {
 
 summarise_by_datetime(hr_data)
 ```
+
+
+## Prepare HR data
+```{r}
+
+hr_data <- read_all("HR.csv.gz") |>
+  get_participant_id() |> 
+  summarise_by_datetime()
+
+ibi_data <- read_all("IBI.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+  
+temp_data <- read_all("TEMP.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+bvp_data <- read_all("BVP.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+eda_data <- read_all("EDA.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+  
+```
+
