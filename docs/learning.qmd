@@ -8,6 +8,7 @@ format: html
 ```{r setup}
 library(fs)
 library(tidyverse)
+library(dplyr)
 library(here)
 source(here("R/functions.R"))
 source(here::here("R/functions.R"))
@@ -289,11 +290,11 @@ hr_data |>
 ```{r}
 #| eval: false
 #| include: false
-#'Making a summerise function
+#' Making a summerise function
 #'
-#' @param data 
+#' @param data
 #'
-#' @returns summerise in collums 
+#' @returns summerise in collums
 
 #'
 summarise_by_datetime <- function(data) {
@@ -320,15 +321,14 @@ summarise_by_datetime(hr_data)
 
 ## Prepare HR data
 ```{r}
-
 hr_data <- read_all("HR.csv.gz") |>
-  get_participant_id() |> 
+  get_participant_id() |>
   summarise_by_datetime()
 
 ibi_data <- read_all("IBI.csv.gz") |>
   get_participant_id() |>
   summarise_by_datetime()
-  
+
 temp_data <- read_all("TEMP.csv.gz") |>
   get_participant_id() |>
   summarise_by_datetime()
@@ -340,25 +340,89 @@ bvp_data <- read_all("BVP.csv.gz") |>
 eda_data <- read_all("EDA.csv.gz") |>
   get_participant_id() |>
   summarise_by_datetime()
-  
 ```
 
 
 ## Pivit longer 
 ```{r}
-
-survey_data <- here("data-raw/nurses-stress/survey-results.csv.gz") |> 
+survey_data <- here("data-raw/nurses-stress/survey-results.csv.gz") |>
   read()
 survey_data
 ```
 
 ```{r}
-survey_tidy <- survey_data |> 
-  mutate(date = myd(date),
-         start_datetime = as_datetime(paste(date, start_time)),
-         end_datetime = as_datetime(paste(date, end_time)),
-         datetime_id = start_datetime,
-         .before = start_time) |> 
+survey_tidy <- survey_data |>
+  mutate(
+    date = mdy(date),
+    start_datetime = as_datetime(paste(date, start_time)),
+    end_datetime = as_datetime(paste(date, end_time)),
+    datetime_id = start_datetime,
+    .before = start_time
+  ) |>
   select(-c(date, start_time, end_time, duration))
 ```
+```{r}
+survey_tidy |>
+  select(id, datetime_id, start_datetime, end_datetime) |>
+  pivot_longer(c(start_datetime, end_datetime), names_to = NULL, values_to = "collection_datetime") |>
+  group_by(pick(-collection_datetime)) |>
+  complete(collection_datetime = seq(min(collection_datetime),
+    max(collection_datetime),
+    by = 60
+  )) |>
+  ungroup()
 
+
+# names_to fjerner name collum
+```
+
+
+
+```{r}
+#| eval: false
+#| include: false
+#' Tidy up the dates in the survey results
+#'
+#' @param data
+#'
+#' @returns tidyed dataset
+#'
+tidy_survey_dates <- function(data) {
+  tidied <- data |>
+    dplyr::mutate(
+      date = lubridate::mdy(date),
+      start_datetime = as_datetime(paste(date, start_time)),
+      end_datetime = as_datetime(paste(date, end_time)),
+      datetime_id = start_datetime,
+      .before = start_time
+    ) |>
+    dplyr::select(-c(date, start_time, end_time, duration))
+  return(tidied)
+}
+```
+
+
+
+
+```{r Tidy-up-survey-results}
+#| eval: false
+#| include: false
+#' Maked the dataset longer
+#'
+#' @param data
+#'
+#' @returns longer dataset
+#'
+survey_to_long <- function(data) {
+  longer <- data |>
+    dplyr::select(id, datetime_id, start_datetime, end_datetime) |>
+    tidyr::pivot_longer(c(start_datetime, end_datetime), names_to = NULL, values_to = "collection_datetime") |>
+    dplyr::group_by(pick(-collection_datetime)) |>
+    tidyr::complete(collection_datetime = seq(min(collection_datetime),
+      max(collection_datetime),
+      by = 60
+    )) |>
+    ungroup()
+  return(longer)
+}
+```
