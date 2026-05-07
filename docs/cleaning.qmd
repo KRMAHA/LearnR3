@@ -13,3 +13,21 @@ format: html
 ```{r}
 library(readr)
 ```
+
+
+## Process survey data.
+```{r}
+survey_tidy <- here::here("data-raw/nurses-stress/survey-results.csv.gz") |>
+  read() |>
+  tidy_survey_dates()
+```
+
+```{r}
+survey_long <- survey_tidy |>
+  survey_to_long()
+```
+
+
+
+
+
