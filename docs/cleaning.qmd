@@ -14,6 +14,29 @@ format: html
 library(readr)
 ```
 
+```{r}
+## Reading in all of the data
+
+hr_data <- read_all("HR.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+ibi_data <- read_all("IBI.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+temp_data <- read_all("TEMP.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+bvp_data <- read_all("BVP.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+
+eda_data <- read_all("EDA.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+```
 
 ## Process survey data.
 ```{r}
@@ -28,6 +51,12 @@ survey_long <- survey_tidy |>
 ```
 
 
-
-
-
+```{r}
+nurses_stress <- survey_long |>
+  full_join(survey_tidy) |>
+  full_join(hr_data) |>
+  full_join(ibi_data) |>
+  full_join(bvp_data) |>
+  full_join(eda_data) |>
+  full_join(temp_data)
+```

@@ -428,7 +428,13 @@ survey_to_long <- function(data) {
 ```
 
 
+
+
+
+
 ```{r}
+#| eval: false
+#| include: false
 survey_long |> 
   left_join(survey_tidy)
 
@@ -448,6 +454,8 @@ survey_long |>
 ```
 
 ```{r}
+#| eval: false
+#| include: false
 nurses_stress <- survey_long |> 
   full_join(survey_tidy) |> 
   full_join(hr_data)
