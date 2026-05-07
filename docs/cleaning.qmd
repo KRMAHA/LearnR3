@@ -6,8 +6,15 @@ format: html
 
 ## Header 1
 
+
 ```{r setup}
-#| include: false
+library(fs)
+library(tidyverse)
+library(dplyr)
+library(here)
+source(here("R/functions.R"))
+source(here::here("R/functions.R"))
+```
 ```
 
 ```{r}
